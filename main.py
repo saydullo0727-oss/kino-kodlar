@@ -380,7 +380,7 @@ async def ban_user_finish(message: Message, state: FSMContext):
     await state.clear()
 
 
-# --- FOYDALANUVCHILAR UCHUN KINO QIDIRUV (MUALLIFSIZ NUSXA OLISH) ---
+# --- FOYDALANUVCHILAR UCHUN KINO QIDIRUV (HIMOYALANGAN REJIM) ---
 @dp.message(F.text)
 async def search_movie(message: Message):
     user_id = message.from_user.id
@@ -405,12 +405,13 @@ async def search_movie(message: Message):
         channel_id, message_id = movie_data
         await message.answer("🔍 Kino topildi! Yo'naltirilmoqda...")
         try:
-            # 🚀 forward_message o'rniga copy_message ishlatamiz.
-            # Bu "Uzatilgan" (Forwarded) yozuvini butunlay o'chirib yuboradi.
+            # 🚀 protect_content=True parametri foydalanuvchilarga kinoni forward qilishni
+            # va videoni telefonga saqlab (skachat qilib) olishni butunlay taqiqlaydi!
             await bot.copy_message(
                 chat_id=message.chat.id,
                 from_chat_id=int(channel_id),
-                message_id=int(message_id)
+                message_id=int(message_id),
+                protect_content=True
             )
         except Exception as e:
             print(f"Xatolik: {e}")
